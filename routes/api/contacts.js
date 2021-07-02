@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const Joi = require("joi");
+
+const { contactAddSchema, contactUpdateSchema } = require("../../schema/scema");
 
 const {
   listContacts,
@@ -9,15 +10,6 @@ const {
   addContact,
   updateContact,
 } = require("../../model");
-
-const productSchema = Joi.object({
-  name: Joi.string().min(2).max(200).required(),
-  email: Joi.string().email({
-    minDomainSegments: 2,
-    tlds: { allow: ["com", "net"] },
-  }),
-  phone: Joi.string().min(7).max(13).required(),
-});
 
 router.get("/", async (req, res, next) => {
   res.json({
@@ -51,7 +43,7 @@ router.get("/:contactId", async (req, res, next) => {
 
 router.post("/", async (req, res, next) => {
   const newContact = req.body;
-  const { error } = productSchema.validate(newContact);
+  const { error } = contactAddSchema.validate(newContact);
   if (error) {
     return res.status(400).json({
       status: "error",
@@ -94,7 +86,7 @@ router.patch("/:contactId", async (req, res, next) => {
   const { contactId } = req.params;
   const newContact = req.body;
 
-  const { error } = productSchema.validate(newContact);
+  const { error } = contactUpdateSchema.validate(newContact);
 
   if (error) {
     return res.status(400).json({
@@ -104,7 +96,8 @@ router.patch("/:contactId", async (req, res, next) => {
     });
   }
 
-  const result = updateContact(contactId, newContact);
+  const result = await updateContact(contactId, newContact);
+  console.log(result);
 
   if (result === -1) {
     return res.status(404).json({
@@ -118,7 +111,7 @@ router.patch("/:contactId", async (req, res, next) => {
     status: "success",
     code: 200,
     data: {
-      result: newContact,
+      result: result,
     },
   });
 });

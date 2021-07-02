@@ -69,9 +69,10 @@ const updateContact = async (contactId, body) => {
     if (idx === -1) {
       return idx;
     }
-    data[idx] = { id: +contactId, ...body };
+    data[idx] = { ...data[idx], ...body };
     const dataString = JSON.stringify(data);
     fs.writeFile(contactsPath, dataString);
+    return data[idx];
   } catch (error) {
     error.message = "updateContact error";
     throw new Error(error.message);
