@@ -7,7 +7,9 @@ const contactsRouter = require("./api/contacts");
 const app = express();
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
-//
+
+require("./configs/config-passport");
+
 app.use(logger(formatsLogger));
 app.use(express.json());
 app.use(cors());
