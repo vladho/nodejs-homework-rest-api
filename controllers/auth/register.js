@@ -1,19 +1,21 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-const { users: service } = require("../../services");
+const { user: service } = require("../../services");
 
 const register = async (req, res, next) => {
   const { email, password } = req.body;
+  console.log(email, password);
   try {
-    const result = await service.getOne({ email });
-    if (result) {
-      return res.status(409).json({
-        status: "error",
-        code: 409,
-        message: "Alredy register",
-      });
-    }
+    // const result = await service.getOne({ email });
+    // console.log(result);
+    // if (result) {
+    //   return res.status(409).json({
+    //     status: "error",
+    //     code: 409,
+    //     message: "Alredy register",
+    //   });
+    // }
 
     const data = await service.add({ email, password });
     const { TOKEN_KEY } = process.env;
