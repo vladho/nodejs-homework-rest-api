@@ -8,15 +8,19 @@ const getOne = (filter) => {
   return User.findOne(filter);
 };
 
-const add = ({ email, password }) => {
-  console.log(User);
-  const newUser = new User({ email });
+const add = ({ email, password, subscription }) => {
+  const newUser = new User({ email, subscription });
   newUser.setPassword(password);
   return newUser.save();
+};
+
+const updateToken = (id, data) => {
+  return User.findByIdAndUpdate(id, data);
 };
 
 module.exports = {
   getById,
   getOne,
   add,
+  updateToken,
 };

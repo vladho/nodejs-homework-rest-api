@@ -10,18 +10,36 @@ const { TOKEN_KEY } = process.env;
 const settings = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: TOKEN_KEY,
+  passReqToCallback: true,
 };
 
 passport.use(
-  new Strategy(settings, async (payload, done) => {
+  new Strategy(settings, async (req, payload, done) => {
+    // try {
+    //   const [, token] = req["Authorization"].split(" ");
+    //   const user = await service.getOne({ _id: payload.id, token });
+    //   console.log(user);
+    //   if (!user) {
+    //     throw new Error("User not found");
+    //   }
+    //   done(null, user);
+    // } catch (error) {
+    //   done(error);
+    // }
     try {
       const user = await service.getById(payload.id);
+      // console.log(user);
       if (!user) {
-        throw new Error("User not found");
+        return done(new Error("User not found"));
       }
-      done(null, user);
-    } catch (error) {
-      done(error);
+
+      if (!user.token) {
+        return done(null, false);
+      }
+
+      return done(null, user);
+    } catch (err) {
+      done(err);
     }
   })
 );
