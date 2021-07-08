@@ -1,10 +1,8 @@
 const { contact: service } = require("../../services");
 
 const getContacts = async (req, res, next) => {
-  const { query } = req;
-
   try {
-    const result = await service.getContacts(query);
+    const result = await service.getContacts({ owner: req.user._id });
     res.json({
       status: "success",
       code: 200,
