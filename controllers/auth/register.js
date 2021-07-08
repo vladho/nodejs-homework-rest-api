@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+
 require("dotenv").config();
 const { joiValidate } = require("../../models/schemas");
 
@@ -27,7 +28,11 @@ const register = async (req, res, next) => {
       });
     }
 
-    const data = await service.add({ email, password, subscription });
+    const data = await service.add({
+      email,
+      password,
+      subscription,
+    });
 
     res.status(201).json({
       status: "Created",
