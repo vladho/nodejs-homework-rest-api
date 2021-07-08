@@ -1,9 +1,13 @@
 const { contact: service } = require("../../services");
 
 const getContactById = async (req, res, next) => {
-  const { contactId } = req.params;
+  const { id } = req.params;
+  const { user } = req;
+
   try {
-    const result = await service.getContactById(contactId);
+    const filter = { _id: id, owner: user._id };
+    const result = await service.getContactById(filter);
+
     if (!result) {
       return res.status(404).json({
         status: "error",
