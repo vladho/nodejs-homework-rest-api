@@ -15,14 +15,7 @@ app.usr;
 
 app.use("/api/contacts", routes.contacts);
 app.use("/api/users", routes.auth);
-app.use("/", routes.upload);
-
-////////
-// const path = require("path");
-// const static = path.join(__dirname);
-// app.use("/", express.static(path.join(process.cwd(), "public")));
-// console.log(path.join(process.cwd(), "public"));
-//////////
+app.use("/api", routes.upload);
 
 require("./bin/config-passport");
 

@@ -21,7 +21,7 @@ async function compressImage(req, res, next) {
     await FSpromises.unlink(originalFilePath);
     const myURL = new URL(
       file.originalname,
-      "http://localhost:3000/api/contacts/avatars/"
+      "http://localhost:3000/api/avatars/"
     );
     req.newUrl = myURL.href;
     next();

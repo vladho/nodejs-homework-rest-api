@@ -16,6 +16,12 @@ router.post("/logout", useAuth, express.json(), ctrl.logout);
 
 router.get("/current", useAuth, ctrl.currentUser);
 
-router.patch("/avatars", useUpload);
+router.patch(
+  "/avatars",
+  useAuth,
+  useUpload.single("avatar"),
+  compressImage,
+  ctrl.updateAvatar
+);
 
 module.exports = router;
