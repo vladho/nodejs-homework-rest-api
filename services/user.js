@@ -19,18 +19,18 @@ const add = ({ email, password, subscription }) => {
   return newUser.save();
 };
 
-const updateToken = (id, data) => {
+const update = (id, data) => {
   return User.findByIdAndUpdate(id, data);
 };
 
-const updateAvatar = (id, data) => {
-  return User.findByIdAndUpdate(id, data);
+const findOne = (id, data) => {
+  return User.findOneAndUpdate(id, data);
 };
 
 module.exports = {
   getById,
   getOne,
   add,
-  updateToken,
-  updateAvatar,
+  update,
+  findOne,
 };
