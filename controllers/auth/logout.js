@@ -4,7 +4,7 @@ const logout = async (req, res, next) => {
   const { user } = req;
 
   try {
-    await service.updateToken(user._id, { token: null });
+    await service.update(user._id, { token: null });
 
     res.json({
       status: "No Content",

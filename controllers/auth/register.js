@@ -1,9 +1,11 @@
 const jwt = require("jsonwebtoken");
+const { v4 } = require("uuid");
+
+const { joiValidate } = require("../../models/schemas");
+const { user: service } = require("../../services");
+const sendMail = require("../../bin/sendMailGmail");
 
 require("dotenv").config();
-const { joiValidate } = require("../../models/schemas");
-
-const { user: service } = require("../../services");
 
 const register = async (req, res, next) => {
   const { value, error } = joiValidate.validate(req.body);
@@ -18,6 +20,7 @@ const register = async (req, res, next) => {
   }
 
   try {
+    const verificationToken = v4();
     const result = await service.getOne({ email });
 
     if (result) {
@@ -27,11 +30,19 @@ const register = async (req, res, next) => {
         message: "Email in use",
       });
     }
+    const toEmail = email;
+
+    sendMail(
+      toEmail,
+      "regiter account",
+      `please, confirm your account http://localhost:3000/api/users/verify/${verificationToken} `
+    );
 
     const data = await service.add({
       email,
       password,
       subscription,
+      verifyToken: verificationToken,
     });
 
     res.status(201).json({

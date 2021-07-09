@@ -11,7 +11,7 @@ const updateAvatar = async (req, res, next) => {
   const newAvatarUrl = req.newUrl;
 
   try {
-    await service.updateAvatar(
+    await service.update(
       { _id: id },
       { avatarURL: newAvatarUrl },
       { new: true }
