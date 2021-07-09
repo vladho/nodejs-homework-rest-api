@@ -1,11 +1,11 @@
 const { user: service } = require("../../services");
+const sendMail = require("../../bin/sendMailGmail");
 
 const verifyByEmail = async (req, res, next) => {
-  // console.log(req.body);
   const { email } = req.body;
 
   try {
-    const user = await service.findOne({ verificationToken });
+    const user = await service.findOne({ email });
 
     if (!email) {
       return res.status(400).json({
@@ -21,6 +21,15 @@ const verifyByEmail = async (req, res, next) => {
         message: "Verification has already been passed",
       });
     }
+
+    sendMail(
+      email,
+      "regiter account",
+      `please, confirm your account http://localhost:3000/api/users/verify/${user.verifyToken} `
+    );
+    res.status(200).json({
+      message: "Verification email sent",
+    });
   } catch (error) {
     next(error);
   }

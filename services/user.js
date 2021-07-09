@@ -9,11 +9,12 @@ const getOne = (filter) => {
   return User.findOne(filter);
 };
 
-const add = ({ email, password, subscription }) => {
+const add = ({ email, password, subscription, verifyToken }) => {
   const newUser = new User({
     email,
     subscription,
     avatarURL: gravatar.url(email, { s: 250 }),
+    verifyToken,
   });
   newUser.setPassword(password);
   return newUser.save();
